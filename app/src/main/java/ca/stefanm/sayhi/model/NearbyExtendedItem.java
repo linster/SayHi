@@ -9,10 +9,6 @@ import java.util.ArrayList;
  */
 public class NearbyExtendedItem extends NearbyItem {
 
-    public NearbyExtendedItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit) {
-        super(userid, nickname, conversationtopics, distance, distanceunit);
-    }
-
     public NearbyExtendedItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
         super(userid, nickname, conversationtopics, distance, distanceunit, userPicture, mapFragment);
     }
@@ -22,9 +18,36 @@ public class NearbyExtendedItem extends NearbyItem {
     private class ConversationRating {
         //This is the model item for the grid in the mockup.
 
-        String place;
-        Integer rating; //Out of 10. Each 1 represents half a star.
-        String notes;
+        private String place;
+        private Integer rating; //Out of 10. Each 1 represents half a star.
+        private String notes;
+
+        public String getPlace() {
+            return place;
+        }
+
+        public void setPlace(String place) {
+            this.place = place;
+        }
+
+        public Integer getRating() {
+            return rating;
+        }
+
+        public void setRating(Integer rating) {
+            if (rating > 10 || rating < 0) {
+                throw new IllegalArgumentException("Rating must be between 0 and 10");
+            }
+            this.rating = rating;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
     }
 
     ArrayList<ConversationRating> ConversationRatings;

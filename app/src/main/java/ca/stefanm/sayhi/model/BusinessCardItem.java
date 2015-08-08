@@ -5,8 +5,24 @@ import android.media.Image;
 /**
  * Created by stefan on 8/8/15.
  */
-public class NearbyBusinessCardItem {
+public class BusinessCardItem {
 
+    public BusinessCardItem(Integer businesscardid, Integer userid, String firstName,
+                            String lastName, String catchPhrase, String phoneNumber,
+                            String cellNumber, String email, String website,
+                            String linkedInURL, Image userPicture) {
+        this.businesscardid = businesscardid;
+        this.userid = userid;
+        FirstName = firstName;
+        LastName = lastName;
+        CatchPhrase = catchPhrase;
+        PhoneNumber = phoneNumber;
+        CellNumber = cellNumber;
+        this.email = email;
+        this.website = website;
+        LinkedInURL = linkedInURL;
+        UserPicture = userPicture;
+    }
 
     private Integer businesscardid; //Id of this business card on the server
     private Integer userid;         //Id of the user who belongs to this business card.

@@ -9,23 +9,32 @@ import java.util.ArrayList;
  */
 public class NearbyItem {
 
+
+    public NearbyItem(Integer userid, Integer sortQuotient, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
+        this.userid = userid;
+        this.sortQuotient = sortQuotient;
+        this.nickname = nickname;
+        this.conversationtopics = conversationtopics;
+        this.distance = distance;
+        this.distanceunit = distanceunit;
+        UserPicture = userPicture;
+        MapFragment = mapFragment;
+    }
+
     public NearbyItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
         this.userid = userid;
         this.nickname = nickname;
         this.conversationtopics = conversationtopics;
         this.distance = distance;
+        this.distanceunit = distanceunit;
         UserPicture = userPicture;
         MapFragment = mapFragment;
     }
 
-    public NearbyItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit) {
-        this.userid = userid;
-        this.nickname = nickname;
-        this.conversationtopics = conversationtopics;
-        this.distance = distance;
-    }
-
     Integer userid;
+
+    /**Used for sorting by magic. This is set on constructor. Server-side does the sorting & algorithm stuff */
+    Integer sortQuotient;
 
     private String nickname;
 
@@ -33,7 +42,10 @@ public class NearbyItem {
 
     private float distance;
 
-    public static enum Distanceunit {METERS, FEET, KILOMETERS, MILES};
+    public enum Distanceunit {METERS, FEET, KILOMETERS, MILES};
+
+    private Distanceunit distanceunit;
+
     private String friendlydistance;
 
     Image UserPicture;
