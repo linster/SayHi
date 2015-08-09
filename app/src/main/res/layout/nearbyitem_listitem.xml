@@ -35,6 +35,30 @@
                 android:id="@+id/distancetextView"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Wants to talk about:"
+            android:id="@+id/text_wantstotalkabout"
+            android:layout_marginLeft="13sp"
+            android:textSize="10dp" />
+
+        <com.ns.developer.tagview.widget.TagCloudLinkView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/talkabout_taglist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="#ffffff"
+            app:isDeletable="false"
+            app:tagLayoutColor="#ffff0000"
+            app:tagTextSize="8sp"
+            app:tagTextColor="#ff9acd32"
+            app:deletableTextSize="8sp"
+            app:deletableTextColor="#ff9acd32"/>
+
     </LinearLayout>
 
     <ImageView

@@ -13,10 +13,18 @@ public class NearbyExtendedItem extends NearbyItem {
         super(userid, nickname, conversationtopics, distance, distanceunit, userPicture, mapFragment);
     }
 
+
+
     String conversationnotes;
 
-    private class ConversationRating {
+    public static class ConversationRating {
         //This is the model item for the grid in the mockup.
+
+        public ConversationRating(String place, Integer rating, String notes) {
+            this.place = place;
+            this.rating = rating;
+            this.notes = notes;
+        }
 
         private String place;
         private Integer rating; //Out of 10. Each 1 represents half a star.
@@ -58,6 +66,10 @@ public class NearbyExtendedItem extends NearbyItem {
 
     public void setConversationRatings(ArrayList<ConversationRating> conversationRatings) {
         ConversationRatings = conversationRatings;
+    }
+
+    public void addNewRating(ConversationRating rating){
+        this.ConversationRatings.add(rating);
     }
 
 
