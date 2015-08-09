@@ -5,6 +5,13 @@ package ca.stefanm.sayhi.model;
  */
 public class MyUserProfile {
 
+    //TODO Intitialize this on initial app load.
+    public MyUserProfile(NearbyItem myNearbyItem, BusinessCardItem myBusinessCard) {
+        this.myNearbyItem = myNearbyItem;
+        this.myBusinessCard = myBusinessCard;
+        this.talkativity = 5;
+    }
+
     //Contains Nearby Item and Nearby Business Card Item
 
 
@@ -29,6 +36,6 @@ public class MyUserProfile {
         this.talkativity = talkativity;
     }
 
-    //Build Constructor, getter/setters.
+
 
 }
