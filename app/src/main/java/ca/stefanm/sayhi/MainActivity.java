@@ -1,15 +1,9 @@
 package ca.stefanm.sayhi;
 
-
-
-
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import ca.stefanm.sayhi.ui.SettingsFragment;
 
 public class MainActivity extends Activity {
 
@@ -18,7 +12,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -36,11 +29,6 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            //transaction.show(new SettingsFragment());
-            transaction.replace(R.id.fragment, new SettingsFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
             return true;
         }
 
