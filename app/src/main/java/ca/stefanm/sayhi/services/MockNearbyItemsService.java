@@ -18,6 +18,7 @@ public class MockNearbyItemsService implements NearbyItemsService {
 
     public MockNearbyItemsService() {
 
+        nearbyItems = new ArrayList<NearbyItem>();
         ArrayList<String> conversationtopics = new ArrayList<String>();
         conversationtopics.add("Computers");
         conversationtopics.add("Stuff");
