@@ -85,4 +85,19 @@ public class NearbyItem {
     }
 
 
+    public Image getUserPicture() {
+        return UserPicture;
+    }
+
+    public void setUserPicture(Image userPicture) {
+        UserPicture = userPicture;
+    }
+
+    public Image getMapFragment() {
+        return MapFragment;
+    }
+
+    public void setMapFragment(Image mapFragment) {
+        MapFragment = mapFragment;
+    }
 }

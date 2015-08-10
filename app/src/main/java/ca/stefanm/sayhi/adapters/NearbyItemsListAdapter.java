@@ -1,81 +1,90 @@
 package ca.stefanm.sayhi.adapters;
 
+import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
+import com.ns.developer.tagview.entity.Tag;
+import com.ns.developer.tagview.widget.TagCloudLinkView;
+
+import java.util.List;
+
+import ca.stefanm.sayhi.R;
+import ca.stefanm.sayhi.model.NearbyItem;
 import ca.stefanm.sayhi.services.NearbyItemsService;
 
 /**
  * Created by stefan on 8/9/15.
  */
-public class NearbyItemsListAdapter implements ListAdapter {
+public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
 
 
-    private NearbyItemsService nearbyItemsService;
+    // Because of how NearbyItems service is defined, the list adapter may be the one phoning
+    // a GetLocationService to figure out where we are and populate the list that way.
 
-    public NearbyItemsListAdapter(NearbyItemsService nearbyItemsService) {
-        this.nearbyItemsService = nearbyItemsService;
+
+    List<NearbyItem> nearbyItems;
+
+    public NearbyItemsListAdapter(Context context, int resource, List<NearbyItem> objects) {
+        super(context, resource, objects);
+        nearbyItems = objects;
     }
 
     @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
+    public View getView(int position, View convertView, ViewGroup parent){
 
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
-    }
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.nearbyitem_listitem, parent, false);
+        }
 
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
 
-    }
+        NearbyItem item = nearbyItems.get(position);
 
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
+        //Get references to all the things
+        TextView nickname = (TextView)convertView.findViewById(R.id.textNickName);
+        TextView friendlydistance = (TextView)convertView.findViewById(R.id.distancetextView);
+        TagCloudLinkView talktopics = (TagCloudLinkView)convertView.findViewById(R.id.talkabout_taglist);
+        ImageView userImage = (ImageView)convertView.findViewById(R.id.UserimageView);
+        ImageView mapImage  = (ImageView)convertView.findViewById(R.id.MapFragmentimageView);
 
-    }
+        //Now we need to populate the ListItemView
+        nickname.setText(item.getNickname());
+        //TODO: make this configurable based on global units settings.
+        friendlydistance.setText(nearbyItems.get(position).getFriendlydistance(null));
 
-    @Override
-    public int getCount() {
-        return 0;
-    }
+        //Talk topics. Need to loop over the list of strings and then follow this:
+        //https://github.com/namito/TagCloudLinkView
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+        int i = 0; //Used as ID for the tag thing.
+        for (String topic : item.getConversationtopics()){
+            talktopics.add(new Tag(i, topic));
+            i++;
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+        //Check if our item has images set. If not, plug in some generic ones.
+        if (item.getUserPicture() == null){
+            Drawable img = getContext().getDrawable(R.drawable.ic_generic_person);
+            userImage.setImageDrawable(img);
+        } else {
+            //TODO: Update this to actually show a picture.
+            //userImage.setImageBitmap(nearbyItems.get(position).getUserPicture());
+        }
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
+        if (item.getMapFragment() == null) {
+            Drawable img = getContext().getDrawable(R.drawable.ic_generic_map);
+            mapImage.setImageDrawable(img);
+        } else {
+            //TODO: Update this to show the map picture.
+        }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
+        return convertView;
 
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
     }
 }

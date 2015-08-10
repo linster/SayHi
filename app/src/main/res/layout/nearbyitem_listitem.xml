@@ -25,7 +25,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Nickname"
                 android:id="@+id/textNickName"
-                android:layout_weight="0.85" />
+                android:layout_weight="0.85"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="0.5mi"
                 android:id="@+id/distancetextView"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:textColor="@android:color/black" />
         </LinearLayout>
 
         <TextView
@@ -43,7 +45,8 @@
             android:text="Wants to talk about:"
             android:id="@+id/text_wantstotalkabout"
             android:layout_marginLeft="13sp"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            android:textColor="@android:color/background_dark" />
 
         <com.ns.developer.tagview.widget.TagCloudLinkView
             xmlns:app="http://schemas.android.com/apk/res-auto"
