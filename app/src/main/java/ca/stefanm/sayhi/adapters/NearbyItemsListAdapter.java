@@ -57,7 +57,7 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         //Now we need to populate the ListItemView
         nickname.setText(item.getNickname());
         //TODO: make this configurable based on global units settings.
-        friendlydistance.setText(nearbyItems.get(position).getFriendlydistance(null));
+        friendlydistance.setText(item.getFriendlydistance(null));
 
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView

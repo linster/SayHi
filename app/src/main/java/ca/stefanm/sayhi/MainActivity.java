@@ -9,28 +9,34 @@ import android.widget.ListView;
 import ca.stefanm.sayhi.adapters.NearbyItemsListAdapter;
 import ca.stefanm.sayhi.services.MockNearbyItemsService;
 import ca.stefanm.sayhi.services.NearbyItemsService;
+import ca.stefanm.sayhi.ui.NearbyListFragment;
 
 public class MainActivity extends Activity {
 
 
     NearbyItemsListAdapter nearbyItemsListAdapter = null;
+    NearbyListFragment nearbyListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        //if (findViewById(R.id.fragment_container) != null) {
 
-        //Set up the List Adapter for the ListView on this activity.
-        //As a test, use only the MockNearbyItemsService.
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+            nearbyListFragment = new NearbyListFragment();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, nearbyListFragment)
+                    .commit();
 
-        NearbyItemsService nearbyItemsService = new MockNearbyItemsService();
 
-        NearbyItemsListAdapter nila = new NearbyItemsListAdapter(getApplicationContext(),
-                R.layout.nearbyitem_listitem,
-                nearbyItemsService.GetNearbyItems(null)); //Null Phone location to start with.
-
-        ListView nearbyItemsListView = (ListView)findViewById(R.id.listView);
-        nearbyItemsListView.setAdapter(nila);
+        //}
 
     }
 

@@ -38,7 +38,7 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <TextView
+        <!-- <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -46,7 +46,7 @@
             android:id="@+id/text_wantstotalkabout"
             android:layout_marginLeft="13sp"
             android:textSize="10dp"
-            android:textColor="@android:color/background_dark" />
+            android:textColor="@android:color/background_dark" /> -->
 
         <com.ns.developer.tagview.widget.TagCloudLinkView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -54,11 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:background="#ffffff"
+            android:background="#00ffffff"
             app:isDeletable="false"
-            app:tagLayoutColor="#ffff0000"
-            app:tagTextSize="8sp"
-            app:tagTextColor="#ff9acd32"
+            app:tagLayoutColor="#ff0277BD"
+            app:tagTextSize="3sp"
+            app:tagTextColor="#ffE1F5FE"
             app:deletableTextSize="8sp"
             app:deletableTextColor="#ff9acd32"/>
 
