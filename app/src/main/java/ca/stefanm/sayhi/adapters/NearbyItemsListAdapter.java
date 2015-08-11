@@ -62,7 +62,7 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView
 
-        int i = 0; //Used as ID for the tag thing.
+        int i = 1; //Used as ID for the tag thing.
         for (String topic : item.getConversationtopics()){
             talktopics.add(new Tag(i, topic));
             i++;

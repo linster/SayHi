@@ -34,7 +34,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="0.5mi"
                 android:id="@+id/distancetextView"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center_vertical|right"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
