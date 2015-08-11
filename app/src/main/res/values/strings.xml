@@ -16,4 +16,9 @@
     <string name="title_hamburgermenu_settings">Settings</string>
     <string name="title_activity_main">SayHi!</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_eifr_rate_interaction">Rate your \n Interaction with \n Nickname</string>
+    <string name="title_eifr_avg_interfactions">Average rating \n of your interactions \n with Nickname</string>
+    <string name="text_rating1">Attentiveness</string>
+    <string name="text_rating2">Active Listening</string>
+    <string name="text_rating3">On Topic</string>
 </resources>

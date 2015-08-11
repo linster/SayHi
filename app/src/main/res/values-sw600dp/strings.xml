@@ -2,4 +2,5 @@
 <resources>
     <string name="title_hamburgermenu_home">Home</string>
     <string name="title_hamburgermenu_freq_contacted">Frequently Contacted</string>
+    <string name="eifr_rate_interaction">Rate your Interaction with Nickname</string>
 </resources>

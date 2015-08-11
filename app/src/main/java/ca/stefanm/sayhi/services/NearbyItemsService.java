@@ -23,6 +23,10 @@ public interface NearbyItemsService {
     public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem);
 
 
+    //Add GetRating AttributeList... returns a list of things that you can rate by on
+    //the extended item view.
+
+    //Add SendRating <K,V> pair.... Sends rating to server.
 
     //Later
 
