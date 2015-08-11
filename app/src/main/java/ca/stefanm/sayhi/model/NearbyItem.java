@@ -3,6 +3,7 @@ package ca.stefanm.sayhi.model;
 import android.media.Image;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by stefan on 8/8/15.
@@ -29,6 +30,16 @@ public class NearbyItem {
         this.distanceunit = distanceunit;
         UserPicture = userPicture;
         MapFragment = mapFragment;
+    }
+
+    UUID uniqueitemid;
+
+    public UUID getUniqueitemid() {
+        return uniqueitemid;
+    }
+
+    public void setUniqueitemid(UUID uniqueitemid) {
+        this.uniqueitemid = uniqueitemid;
     }
 
     Integer userid;

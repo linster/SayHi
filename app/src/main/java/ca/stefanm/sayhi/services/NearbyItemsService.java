@@ -1,6 +1,7 @@
 package ca.stefanm.sayhi.services;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
 import ca.stefanm.sayhi.model.NearbyItem;
@@ -21,7 +22,7 @@ public interface NearbyItemsService {
 
     //Given a NearbyItem, get back a NearbyExtendedItem from the server.
     public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem);
-
+    public NearbyExtendedItem GetExtendedItem(UUID uuid);
 
     //Add GetRating AttributeList... returns a list of things that you can rate by on
     //the extended item view.
