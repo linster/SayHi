@@ -22,6 +22,7 @@ public class MockNearbyItemsService implements NearbyItemsService {
         ArrayList<String> conversationtopics = new ArrayList<String>();
         conversationtopics.add("Computers");
         conversationtopics.add("Stuff");
+        conversationtopics.add("Whatever");
 
 
 

@@ -15,7 +15,7 @@ public class NearbyItem {
         this.sortQuotient = sortQuotient;
         this.nickname = nickname;
         this.conversationtopics = conversationtopics;
-        this.distance = distance;
+        setDistance(distance, distanceunit);
         this.distanceunit = distanceunit;
         UserPicture = userPicture;
         MapFragment = mapFragment;
@@ -25,7 +25,7 @@ public class NearbyItem {
         this.userid = userid;
         this.nickname = nickname;
         this.conversationtopics = conversationtopics;
-        this.distance = distance;
+        setDistance(distance, distanceunit);
         this.distanceunit = distanceunit;
         UserPicture = userPicture;
         MapFragment = mapFragment;
@@ -78,6 +78,8 @@ public class NearbyItem {
 
     public void setDistance(float distance, Distanceunit u) {
         this.distance = distance;
+        //Todo: Fix units.
+        this.friendlydistance = Float.toString(distance) + "Mi";
     }
 
     public String getFriendlydistance(Distanceunit u) {
