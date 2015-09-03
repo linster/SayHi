@@ -42,7 +42,7 @@ public class NearbyListFragment extends Fragment {
 
         final NearbyItemsService nearbyItemsService = new MockNearbyItemsService();
 
-        NearbyItemsListAdapter nila = new NearbyItemsListAdapter(getActivity(),
+        final NearbyItemsListAdapter nila = new NearbyItemsListAdapter(getActivity(),
                 R.layout.nearbyitem_listitem,
                 nearbyItemsService.GetNearbyItems(null)); //Null Phone location to start with.
 
@@ -57,7 +57,7 @@ public class NearbyListFragment extends Fragment {
                 UUID neiuud = nei.getUniqueitemid();
 
                 Intent intent = new Intent(getActivity(), ExtendedViewActivity.class);
-                intent.putExtra("EXTENDEDVIEW_UUID", neiuud);
+                intent.putExtra("EXTENDED_VIEW_UUID", neiuud.toString());
 
                 startActivity(intent);
             }

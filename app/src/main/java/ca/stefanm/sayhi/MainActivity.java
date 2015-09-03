@@ -2,6 +2,8 @@ package ca.stefanm.sayhi;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -11,7 +13,7 @@ import ca.stefanm.sayhi.services.MockNearbyItemsService;
 import ca.stefanm.sayhi.services.NearbyItemsService;
 import ca.stefanm.sayhi.ui.NearbyListFragment;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
 
     NearbyItemsListAdapter nearbyItemsListAdapter = null;
@@ -20,6 +22,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+
         setContentView(R.layout.activity_main);
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

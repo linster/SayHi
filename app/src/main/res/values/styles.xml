@@ -1,8 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <!-- Customize your theme here. -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Set AppCompat’s actionBarStyle -->
+        <item name="actionBarStyle">@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse </item>
+
+        <!-- Set AppCompat’s color theming attrs -->
+        <item name="colorPrimary">#6D4C41</item>
+        <item name="colorPrimaryDark">#3E2723</item>
+
+        <!-- The rest of your attributes -->
     </style>
 
 </resources>

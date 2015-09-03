@@ -10,8 +10,12 @@ import java.util.UUID;
  */
 public class NearbyItem {
 
+    public NearbyItem() {
+        this.uniqueitemid = UUID.randomUUID();
+    }
 
     public NearbyItem(Integer userid, Integer sortQuotient, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
+        this.uniqueitemid = UUID.randomUUID();
         this.userid = userid;
         this.sortQuotient = sortQuotient;
         this.nickname = nickname;
@@ -23,6 +27,7 @@ public class NearbyItem {
     }
 
     public NearbyItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
+        this.uniqueitemid = UUID.randomUUID();
         this.userid = userid;
         this.nickname = nickname;
         this.conversationtopics = conversationtopics;

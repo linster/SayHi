@@ -1,6 +1,7 @@
 package ca.stefanm.sayhi.services;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
 import ca.stefanm.sayhi.model.NearbyExtendedItem.ConversationRating;
@@ -54,5 +55,10 @@ public class MockNearbyItemsService implements NearbyItemsService {
 
         return nei;
 
+    }
+
+    @Override
+    public NearbyExtendedItem GetExtendedItem(UUID uuid) {
+        return GetExtendedItem(new NearbyExtendedItem());
     }
 }

@@ -9,6 +9,9 @@ import java.util.ArrayList;
  */
 public class NearbyExtendedItem extends NearbyItem {
 
+    public NearbyExtendedItem() {
+    }
+
     public NearbyExtendedItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
         super(userid, nickname, conversationtopics, distance, distanceunit, userPicture, mapFragment);
     }
@@ -58,7 +61,7 @@ public class NearbyExtendedItem extends NearbyItem {
         }
     }
 
-    ArrayList<ConversationRating> ConversationRatings;
+    ArrayList<ConversationRating> ConversationRatings = new ArrayList<ConversationRating>();
 
     public ArrayList<ConversationRating> getConversationRatings() {
         return ConversationRatings;
