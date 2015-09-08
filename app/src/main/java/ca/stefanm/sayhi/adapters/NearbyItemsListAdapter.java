@@ -57,32 +57,20 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         //Now we need to populate the ListItemView
         nickname.setText(item.getNickname());
         //TODO: make this configurable based on global units settings.
-        friendlydistance.setText(item.getFriendlydistance(null));
+        friendlydistance.setText(item.getFriendlyDistance(null));
 
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView
 
         int i = 1; //Used as ID for the tag thing.
-        for (String topic : item.getConversationtopics()){
+        for (String topic : item.getConversationTopics()){
             talktopics.add(new Tag(i, topic));
             i++;
         }
 
-        //Check if our item has images set. If not, plug in some generic ones.
-        if (item.getUserPicture() == null){
-            Drawable img = getContext().getDrawable(R.drawable.ic_generic_person);
-            userImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to actually show a picture.
-            //userImage.setImageBitmap(nearbyItems.get(position).getUserPicture());
-        }
-
-        if (item.getMapFragment() == null) {
-            Drawable img = getContext().getDrawable(R.drawable.ic_generic_map);
-            mapImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to show the map picture.
-        }
+        userImage.setImageDrawable(item.getUserImage(getContext()));
+        mapImage.setImageDrawable(item.getMapImage(getContext()));
+        
 
         return convertView;
 
