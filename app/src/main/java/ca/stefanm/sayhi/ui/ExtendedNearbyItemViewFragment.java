@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ns.developer.tagview.entity.Tag;
 import com.ns.developer.tagview.widget.TagCloudLinkView;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -84,32 +85,30 @@ public class ExtendedNearbyItemViewFragment extends Fragment {
         //Now we need to populate the ListItemView
         nickname.setText(nearbyExtendedItem.getNickname());
         //TODO: make this configurable based on global units settings.
-        friendlydistance.setText(nearbyExtendedItem.getFriendlydistance(null));
+        friendlydistance.setText(nearbyExtendedItem.getFriendlyDistance());
 
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView
 
         int i = 1; //Used as ID for the tag thing.
-        for (String topic : nearbyExtendedItem.getConversationtopics()){
+        for (String topic : nearbyExtendedItem.getConversationTopics()){
             talktopics.add(new Tag(i, topic));
             i++;
         }
 
-        //Check if our item has images set. If not, plug in some generic ones.
-        if (nearbyExtendedItem.getUserPicture() == null){
-            Drawable img = getActivity().getDrawable(R.drawable.ic_generic_person);
-            userImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to actually show a picture.
-            //userImage.setImageBitmap(nearbyItems.get(position).getUserPicture());
-        }
+        //userImage.setImageDrawable(nearbyExtendedItem.getUserImage(getActivity(), userImage));
+        //mapImage.setImageDrawable(nearbyExtendedItem.getMapImage(getActivity(), mapImage));
 
-        if (nearbyExtendedItem.getMapFragment() == null) {
-            Drawable img = getActivity().getDrawable(R.drawable.ic_generic_map);
-            mapImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to show the map picture.
-        }
+        Picasso.with(getActivity()).load(nearbyExtendedItem.getUserImage())
+                .placeholder(R.drawable.ic_generic_person)
+                .error(R.drawable.ic_generic_person)
+                .into(userImage);
+
+        Picasso.with(getActivity()).load(nearbyExtendedItem.getMapImage())
+                .placeholder(R.drawable.ic_generic_map)
+                .error(R.drawable.ic_generic_map)
+                .into(mapImage);
+
 
     }
 }
