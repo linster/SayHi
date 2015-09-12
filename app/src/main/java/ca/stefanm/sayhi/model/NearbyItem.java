@@ -1,121 +1,88 @@
 package ca.stefanm.sayhi.model;
 
-import android.media.Image;
+        import android.content.Context;
+        import android.graphics.drawable.Drawable;
+        import android.os.Parcel;
+        import android.os.Parcelable;
+        import android.widget.ImageView;
+        import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.UUID;
+        import com.squareup.picasso.Picasso;
 
-/**
- * Created by stefan on 8/8/15.
- */
-public class NearbyItem {
+        import java.io.Serializable;
+        import java.util.ArrayList;
+        import java.util.List;
+
+        import ca.stefanm.sayhi.R;
+        import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
+        import ca.stefanm.sayhi.model.restpojo.Profile;
+        import ca.stefanm.sayhi.services.Retrofit.ServiceGenerator;
+        import retrofit.Callback;
+        import retrofit.RetrofitError;
+        import retrofit.client.Response;
+
+public class NearbyItem implements INearbyItem, Parcelable {
+    public static final String CREATOR = "stefan";
+    /* The Rest POJO that holds the goods */
+    public Profile profile;
+
+    public NearbyItem(Profile profile) {
+        this.profile = profile;
+    }
 
     public NearbyItem() {
-        this.uniqueitemid = UUID.randomUUID();
     }
 
-    public NearbyItem(Integer userid, Integer sortQuotient, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        this.uniqueitemid = UUID.randomUUID();
-        this.userid = userid;
-        this.sortQuotient = sortQuotient;
-        this.nickname = nickname;
-        this.conversationtopics = conversationtopics;
-        setDistance(distance, distanceunit);
-        this.distanceunit = distanceunit;
-        UserPicture = userPicture;
-        MapFragment = mapFragment;
+    @Override
+    public long getItemId() {
+        return profile.getProfileid();
     }
 
-    public NearbyItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        this.uniqueitemid = UUID.randomUUID();
-        this.userid = userid;
-        this.nickname = nickname;
-        this.conversationtopics = conversationtopics;
-        setDistance(distance, distanceunit);
-        this.distanceunit = distanceunit;
-        UserPicture = userPicture;
-        MapFragment = mapFragment;
-    }
-
-    UUID uniqueitemid;
-
-    public UUID getUniqueitemid() {
-        return uniqueitemid;
-    }
-
-    public void setUniqueitemid(UUID uniqueitemid) {
-        this.uniqueitemid = uniqueitemid;
-    }
-
-    Integer userid;
-
-    /**Used for sorting by magic. This is set on constructor. Server-side does the sorting & algorithm stuff */
-    Integer sortQuotient;
-
-    private String nickname;
-
-    private ArrayList<String> conversationtopics;
-
-    private float distance;
-
-    public enum Distanceunit {METERS, FEET, KILOMETERS, MILES};
-
-    private Distanceunit distanceunit;
-
-    private String friendlydistance;
-
-    Image UserPicture;
-    Image MapFragment;
-
-
+    @Override
     public String getNickname() {
-        return nickname;
+        return profile.getNickname();
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    @Override
+    public String getFriendlyDistance() {
+        return "1.0 mi";
     }
 
-    public ArrayList<String> getConversationtopics() {
-        return conversationtopics;
+    @Override
+    public List<String> getConversationTopics() {
+        return profile.getConversationTopics();
     }
 
-    public void setConversationtopics(ArrayList<String> conversationtopics) {
-        this.conversationtopics = conversationtopics;
+    @Override
+    public String getUserImage() {
+       return profile.getPictureurl();
     }
 
-
-    //Todo: Make Friendly distance unit-agnostic, and return nice things.
-    //Meanwhile, just use metric units.
-
-    public float getDistance() {
-        return distance;
+    @Override
+    public String getMapImage() {
+        return null;
     }
 
-    public void setDistance(float distance, Distanceunit u) {
-        this.distance = distance;
-        //Todo: Fix units.
-        this.friendlydistance = Float.toString(distance) + "Mi";
+    public static NearbyItem buildNearbyItem(NearbyResponse nr) {
+
+        Profile p = new Profile();
+        p.setProfileid(nr.getProfileid());
+        p.setNickname(nr.getNickname());
+        p.setBusinessCardId(nr.getBusinessCardId());
+        p.setChattiness(nr.getChattiness());
+        p.setConversationTopics(nr.getConversationTopics());
+        p.setPictureurl(nr.getPictureurl());
+        NearbyItem r = new NearbyItem(p);
+        return r;
     }
 
-    public String getFriendlydistance(Distanceunit u) {
-        return friendlydistance;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-    public Image getUserPicture() {
-        return UserPicture;
-    }
-
-    public void setUserPicture(Image userPicture) {
-        UserPicture = userPicture;
-    }
-
-    public Image getMapFragment() {
-        return MapFragment;
-    }
-
-    public void setMapFragment(Image mapFragment) {
-        MapFragment = mapFragment;
     }
 }

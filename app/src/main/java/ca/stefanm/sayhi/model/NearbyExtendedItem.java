@@ -1,79 +1,49 @@
 package ca.stefanm.sayhi.model;
 
-import android.media.Image;
-
 import java.util.ArrayList;
+import java.util.List;
+
+import ca.stefanm.sayhi.model.restpojo.AverageRating;
+import ca.stefanm.sayhi.model.restpojo.AverageRatings;
+import ca.stefanm.sayhi.model.restpojo.Profile;
 
 /**
  * Created by stefan on 8/8/15.
  */
 public class NearbyExtendedItem extends NearbyItem {
 
+
+    //Compose: AverageRatings for now. Later on, set up another db table with notes and things.
+
+    private ArrayList<AverageRating> averageRatings;
+
+
+
     public NearbyExtendedItem() {
     }
 
-    public NearbyExtendedItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        super(userid, nickname, conversationtopics, distance, distanceunit, userPicture, mapFragment);
+    public NearbyExtendedItem(Profile profile, ArrayList<AverageRating> averageRatings) {
+        super(profile);
+        this.averageRatings = averageRatings;
     }
 
-
-
-    String conversationnotes;
-
-    public static class ConversationRating {
-        //This is the model item for the grid in the mockup.
-
-        public ConversationRating(String place, Integer rating, String notes) {
-            this.place = place;
-            this.rating = rating;
-            this.notes = notes;
-        }
-
-        private String place;
-        private Integer rating; //Out of 10. Each 1 represents half a star.
-        private String notes;
-
-        public String getPlace() {
-            return place;
-        }
-
-        public void setPlace(String place) {
-            this.place = place;
-        }
-
-        public Integer getRating() {
-            return rating;
-        }
-
-        public void setRating(Integer rating) {
-            if (rating > 10 || rating < 0) {
-                throw new IllegalArgumentException("Rating must be between 0 and 10");
+    AverageRating getRating(String category){
+        for (AverageRating a : this.averageRatings){
+            if (a.getCategoryName().equals(category)){
+                return a;
             }
-            this.rating = rating;
         }
-
-        public String getNotes() {
-            return notes;
-        }
-
-        public void setNotes(String notes) {
-            this.notes = notes;
-        }
+        return null;
     }
 
-    ArrayList<ConversationRating> ConversationRatings = new ArrayList<ConversationRating>();
-
-    public ArrayList<ConversationRating> getConversationRatings() {
-        return ConversationRatings;
+    List<AverageRating> getAllRatings(){
+        return averageRatings;
     }
 
-    public void setConversationRatings(ArrayList<ConversationRating> conversationRatings) {
-        ConversationRatings = conversationRatings;
+    void setAverageRatings(ArrayList<AverageRating> ar){
+        this.averageRatings = ar;
     }
 
-    public void addNewRating(ConversationRating rating){
-        this.ConversationRatings.add(rating);
-    }
 
 
 }

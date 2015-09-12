@@ -1,20 +1,20 @@
 package ca.stefanm.sayhi;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import ca.stefanm.sayhi.adapters.NearbyItemsListAdapter;
-import ca.stefanm.sayhi.services.MockNearbyItemsService;
-import ca.stefanm.sayhi.services.NearbyItemsService;
+import ca.stefanm.sayhi.ui.LocationDebugDialog;
+import ca.stefanm.sayhi.ui.LoginDebugDialog;
 import ca.stefanm.sayhi.ui.NearbyListFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
+
+    //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
 
     NearbyItemsListAdapter nearbyItemsListAdapter = null;
     NearbyListFragment nearbyListFragment;
@@ -68,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.menu_locationdebug:
+                LocationDebugDialog ldd = new LocationDebugDialog();
+                ldd.show(getFragmentManager(), "LDD");
+                break;
+            case R.id.menu_logindebug:
+                LoginDebugDialog lodd = new LoginDebugDialog();
+                lodd.show(getFragmentManager(), "LODD");
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

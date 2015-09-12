@@ -1,13 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="ca.stefanm.sayhi.ui.ExtendedNearbyItemViewFragment"
-        android:id="@+id/container_eifr"
-        tools:layout="@layout/fragment_extendeditem_view" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="0.9">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Nickname"
+                    android:id="@+id/eifrNickname"
+                    android:layout_weight="0.9" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="0.5mi"
+                    android:id="@+id/eifrFriendlyDist"
+                    android:layout_margin="1sp"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Wants to Talk About"
+                android:id="@+id/eifr_wants_to_talkabout"
+                android:textSize="8dp"
+                android:layout_marginLeft="13sp" />
+
+            <com.ns.developer.tagview.widget.TagCloudLinkView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eifr_talkabout_taglist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:background="#00ffffff"
+                app:isDeletable="false"
+                app:tagLayoutColor="#ff0277BD"
+                app:tagTextSize="3sp"
+                app:tagTextColor="#ffE1F5FE"
+                app:deletableTextSize="8sp"
+                app:deletableTextColor="#ff9acd32"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <ImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="#ffd442"
+                android:id="@+id/eifrUserImageView"
+                android:layout_margin="5dp" />
+            <ImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="#8cf4ff"
+                android:id="@+id/eifrMapFragmentImageView"
+                android:layout_margin="5dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Rate Conversation"
+                android:id="@+id/eifr_rate_convo"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="75dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Average Rating"
+                android:id="@+id/eifr_avg_rating"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="5sp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/text_rating1"
+                android:id="@+id/text_rating1" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/avgRating1"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/yourRating1"
+                style="?android:attr/ratingBarStyleSmall"
+                android:stepSize="0.5"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="5sp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/text_rating2"
+                android:id="@+id/text_rating2" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/avgRating2"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/yourRating2"
+                style="?android:attr/ratingBarStyleSmall"
+                android:stepSize="0.5"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="5sp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/text_rating3"
+                android:id="@+id/text_rating3" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/avgRating3"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/yourRating3"
+                style="?android:attr/ratingBarStyleSmall"
+                android:stepSize="0.5"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:gravity="bottom">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exchange Contact Info"
+            android:id="@+id/eifr_exchange_contact_info" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Talk to Nickname"
+            android:id="@+id/efir_ping_nick" />
+
+    </LinearLayout>
+
 </LinearLayout>

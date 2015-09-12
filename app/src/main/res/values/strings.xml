@@ -21,4 +21,7 @@
     <string name="text_rating1">Attentiveness</string>
     <string name="text_rating2">Active Listening</string>
     <string name="text_rating3">On Topic</string>
+    <string name="title_activity_splash">Welcome</string>
+    <string name="login_button_text">Login with Google</string>
+    <string name="OK">OK</string>
 </resources>

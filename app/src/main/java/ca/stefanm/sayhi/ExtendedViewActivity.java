@@ -2,15 +2,26 @@ package ca.stefanm.sayhi;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.ns.developer.tagview.entity.Tag;
+import com.ns.developer.tagview.widget.TagCloudLinkView;
+import com.squareup.picasso.Picasso;
+
+import java.util.UUID;
 
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
+import ca.stefanm.sayhi.services.MockNearbyItemsService;
 import ca.stefanm.sayhi.ui.ExtendedNearbyItemViewFragment;
 import ca.stefanm.sayhi.ui.NearbyListFragment;
-
+import ca.stefanm.sayhi.R;
 /**
  * Created by stefan on 8/11/15.
  */
-public class ExtendedViewActivity extends Activity {
+public class ExtendedViewActivity extends AppCompatActivity {
 
 
     ExtendedNearbyItemViewFragment extendedNearbyItemViewFragment;
@@ -30,14 +41,7 @@ public class ExtendedViewActivity extends Activity {
         }
 
 
-        Bundle args = new Bundle();
-        args.putString("EXTENDED_VIEW_UUID", getIntent().getExtras().getString("EXTENDED_VIEW_UUID"));
-        extendedNearbyItemViewFragment = new ExtendedNearbyItemViewFragment();
-        extendedNearbyItemViewFragment.setArguments(args);
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container_eifr, extendedNearbyItemViewFragment)
-                .commit();
 
         //}
 
@@ -50,23 +54,79 @@ public class ExtendedViewActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //We have an Intent with our arguments in it. Now we take the UUID in the Intent and make it
-        //a Bundle so the fragment can deal with it.
 
-
-
-        //extendedNearbyItemViewFragment = new NearbyListFragment();
-        //getFragmentManager().beginTransaction().replace()
-
-
+        UpdateView();
 
 
 
     }
 
-    //OnPause, need to remove the fragment from the fragment manager so we can set up the arguments
-    //again onResume.
+    public void UpdateView(){
+        //Updates the View.
+        PopulateItem();
+        TextView nickname = (TextView)findViewById(R.id.eifrNickname);
+        TextView friendlydistance = (TextView)findViewById(R.id.eifrFriendlyDist);
+        TagCloudLinkView talktopics = (TagCloudLinkView)findViewById(R.id.eifr_talkabout_taglist);
+        ImageView userImage = (ImageView)findViewById(R.id.eifrUserImageView);
+        ImageView mapImage  = (ImageView)findViewById(R.id.eifrMapFragmentImageView);
 
-    //(Can only setArgs on a Fragment not bound
+        //Now we need to populate the ListItemView
+        nickname.setText(nearbyExtendedItem.getNickname());
+        //TODO: make this configurable based on global units settings.
+        friendlydistance.setText(nearbyExtendedItem.getFriendlyDistance());
+
+        //Talk topics. Need to loop over the list of strings and then follow this:
+        //https://github.com/namito/TagCloudLinkView
+
+        int i = 1; //Used as ID for the tag thing.
+        for (String topic : nearbyExtendedItem.getConversationTopics()){
+            talktopics.add(new Tag(i, topic));
+            i++;
+        }
+
+        //userImage.setImageDrawable(nearbyExtendedItem.getUserImage(getApplicationContext(), userImage));
+        //mapImage.setImageDrawable(nearbyExtendedItem.getMapImage(getApplicationContext(), mapImage));
+
+        Picasso.with(this).load(nearbyExtendedItem.getUserImage())
+                .placeholder(R.drawable.ic_generic_person)
+                .error(R.drawable.ic_generic_person)
+                .into(userImage);
+
+        Picasso.with(this).load(nearbyExtendedItem.getMapImage())
+                .placeholder(R.drawable.ic_generic_map)
+                .error(R.drawable.ic_generic_map)
+                .into(mapImage);
+
+
+    }
+
+    private void PopulateItem() {
+        //Bundle arguments = getArguments();
+        //String ItemId = arguments.getString("EXTENDED_VIEW_UUID");
+        /*
+        UUID ItemUUID;
+        if (ItemId != null) {
+            // we have a Question, grab it from dataManager
+            ItemUUID = UUID.fromString(ItemId);
+        } else {
+            // no Question, toss er back to the main screen
+            Toast.makeText(getActivity(), "Could not open specified item", Toast.LENGTH_LONG).show();
+        }*/
+
+        //TODO: Actually Make this work.
+        MockNearbyItemsService mockNearbyItemsService = new MockNearbyItemsService();
+        setNearbyExtendedItem(mockNearbyItemsService.GetExtendedItem(UUID.randomUUID()));
+    }
+
+    public NearbyExtendedItem getNearbyExtendedItem() {
+        return nearbyExtendedItem;
+    }
+
+    public void setNearbyExtendedItem(NearbyExtendedItem nearbyExtendedItem) {
+        this.nearbyExtendedItem = nearbyExtendedItem;
+    }
+
+    NearbyExtendedItem nearbyExtendedItem;
+
 
 }
