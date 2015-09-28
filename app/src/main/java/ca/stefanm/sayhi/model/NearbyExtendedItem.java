@@ -1,76 +1,85 @@
 package ca.stefanm.sayhi.model;
 
-import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
+import ca.stefanm.sayhi.model.restpojo.AverageRating;
+import ca.stefanm.sayhi.model.restpojo.AverageRatings;
+import ca.stefanm.sayhi.model.restpojo.Profile;
+import ca.stefanm.sayhi.services.MagicAPIKeys;
 
 /**
  * Created by stefan on 8/8/15.
  */
-public class NearbyExtendedItem extends NearbyItem {
+public class NearbyExtendedItem extends NearbyItem implements Serializable {
 
-    public NearbyExtendedItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        super(userid, nickname, conversationtopics, distance, distanceunit, userPicture, mapFragment);
+    //http://stackoverflow.com/questions/18548077/parcelable-protocol-requires-a-parcelable-creator-object-called-creator-i-do-ha
+
+    //public static final String CREATOR = "stefan";
+
+    //Compose: AverageRatings for now. Later on, set up another db table with notes and things.
+
+    private List<AverageRating> averageRatings = new ArrayList<AverageRating>();
+
+
+
+    public NearbyExtendedItem() {
     }
 
+    public NearbyExtendedItem(Profile profile, ArrayList<AverageRating> averageRatings) {
+        super(profile);
+        this.averageRatings = averageRatings;
+    }
 
-
-    String conversationnotes;
-
-    public static class ConversationRating {
-        //This is the model item for the grid in the mockup.
-
-        public ConversationRating(String place, Integer rating, String notes) {
-            this.place = place;
-            this.rating = rating;
-            this.notes = notes;
-        }
-
-        private String place;
-        private Integer rating; //Out of 10. Each 1 represents half a star.
-        private String notes;
-
-        public String getPlace() {
-            return place;
-        }
-
-        public void setPlace(String place) {
-            this.place = place;
-        }
-
-        public Integer getRating() {
-            return rating;
-        }
-
-        public void setRating(Integer rating) {
-            if (rating > 10 || rating < 0) {
-                throw new IllegalArgumentException("Rating must be between 0 and 10");
+    public AverageRating getRating(String category){
+        for (AverageRating a : this.averageRatings){
+            if (a.getCategoryName().equals(category)){
+                return a;
             }
-            this.rating = rating;
+        }
+        return null;
+    }
+
+    List<AverageRating> getAllRatings(){
+        return averageRatings;
+    }
+
+    public void setAverageRatings(List<AverageRating> ar){
+        this.averageRatings = ar;
+    }
+
+    public String getMapImage() {
+
+        String urlhead = "https://maps.googleapis.com/maps/api/staticmap?";
+
+        // Set up parameters after "?"
+        //https://developers.google.com/maps/documentation/static-maps/intro
+
+        if (this.JSONpoint == null || this.JSONpoint.equals("")){
+            return null;
         }
 
-        public String getNotes() {
-            return notes;
-        }
+        String center = "center="+ getLocation().latitude + "," + getLocation().longitude;
+        String zoom = "zoom="+"14";
 
-        public void setNotes(String notes) {
-            this.notes = notes;
-        }
+        // Magic to get markers of the point onto the map
+        String marker = "markers=size:small%7Ccolor:black%7C" + getLocation().latitude + "," + getLocation().longitude;
+
+
+        String size = "size="+"128x128";
+        String apikey = "key="+ MagicAPIKeys.STATIC_MAPS_API_KEY;
+
+        String url = urlhead + center + "&" + zoom + "&" + size + "&"  + marker + "&" + apikey;
+        Log.d("MapImageURL", url);
+        return url;
     }
 
-    ArrayList<ConversationRating> ConversationRatings;
 
-    public ArrayList<ConversationRating> getConversationRatings() {
-        return ConversationRatings;
-    }
-
-    public void setConversationRatings(ArrayList<ConversationRating> conversationRatings) {
-        ConversationRatings = conversationRatings;
-    }
-
-    public void addNewRating(ConversationRating rating){
-        this.ConversationRatings.add(rating);
-    }
 
 
 }

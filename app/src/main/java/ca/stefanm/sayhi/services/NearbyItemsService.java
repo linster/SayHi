@@ -1,48 +1,152 @@
 package ca.stefanm.sayhi.services;
 
-import java.util.ArrayList;
+import android.app.IntentService;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.ResultReceiver;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.nearby.Nearby;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import ca.stefanm.sayhi.model.ISayHi;
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
 import ca.stefanm.sayhi.model.NearbyItem;
 import ca.stefanm.sayhi.model.PhoneLocation;
+import ca.stefanm.sayhi.model.restpojo.AverageRating;
+import ca.stefanm.sayhi.model.restpojo.LocationRequestBody;
+import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
+import ca.stefanm.sayhi.services.Retrofit.ServiceGenerator;
+import ca.stefanm.sayhi.ui.NearbyListFragment;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 
 /**
- * Created by stefan on 8/9/15.
+ * Created by stefan on 9/6/15.
  */
-public interface NearbyItemsService {
+public class NearbyItemsService extends IntentService implements INearbyItemsService  {
 
-    //Here we need to do a few things. & Define the interface.
+    private static final int RESULT_GOOD = 1;
+    private ISayHi api = ServiceGenerator.getService();
+    private ResultReceiver rr = null;
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public NearbyItemsService(String name) {
+        super(name);
+    }
 
-    //Be able to:
+    public NearbyItemsService(){
+        super("NearbyItemService");
+    }
 
-    //Send our location to the server, and get back a list of NearbyItems
-    public ArrayList<NearbyItem> GetNearbyItems(PhoneLocation location);
+    @Override
+    protected void onHandleIntent(Intent intent) {
+
+        //Unpack the result receiver from the extras so we can populate our result list in there.
+        this.rr = intent.getParcelableExtra("NearbyListResultReceiver");
+
+        //Get a Location Changed intent going in here and do magic.
+        GetNearbyItems(null);
+    }
 
 
-    //Given a NearbyItem, get back a NearbyExtendedItem from the server.
-    public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem);
+    @Override
+    public ArrayList<NearbyItem> GetNearbyItems(LocationRequestBody location) {
+        location = new LocationRequestBody(53.521705, -113.594349, 12.0); //TODO get rid of this once gps works.
+        api.logLocation(location, new Callback<List<NearbyResponse>>() {
+            @Override
+            public void success(List<NearbyResponse> nearbyResponses, Response response) {
+                //Go through the fragment, get the list adapter instance, update the list.
+                Toast.makeText(getApplicationContext(), "Number of items returned: " + nearbyResponses.size(), Toast.LENGTH_SHORT).show();
+                // http://stackoverflow.com/questions/10334901/how-to-get-results-from-an-intentservice-back-into-an-activity
+                //In the fragment have a result receiver.
+                /* NearbyListFragment.getListAdapter().clear();
+
+                //Build the nearbyResponse into a NearbyItem. They could be different in the future.
+                for (NearbyResponse nr : nearbyResponses){
+                    NearbyItem nbi = NearbyItem.buildNearbyItem(nr);
+                    NearbyListFragment.getListAdapter().add(nbi);
+                }*/
+                List<NearbyItem> nearbyItems = new ArrayList<NearbyItem>();
+                for (NearbyResponse nr: nearbyResponses){
+                    NearbyItem nbi = NearbyItem.buildNearbyItem(nr);
+                    nearbyItems.add(nbi);
+                }
+
+                NearbyItem[] arrNearbyItems = new NearbyItem[nearbyItems.size()];
+                arrNearbyItems = nearbyItems.toArray(arrNearbyItems);
 
 
-    //Add GetRating AttributeList... returns a list of things that you can rate by on
-    //the extended item view.
+                Bundle resultdata = new Bundle();
+                resultdata.putParcelableArray("ResultArray", arrNearbyItems);
+                rr.send(RESULT_GOOD, resultdata);
 
-    //Add SendRating <K,V> pair.... Sends rating to server.
 
-    //Later
 
-    //Authenticate with the server, say it's us
-    //Sign up for a new account by using a REST api to transact.
-    // --> Uses Passport.Js on the server-side to login with a bunch of things. THe mock version
-    //of the service will just magically authenticate :)
+            }
 
-    //Later:
-    //Send to the server who is near by using the NearBy Google API
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getApplicationContext(), "API Request Error: GetNearbyItems", Toast.LENGTH_SHORT).show();
+                Log.e("GetNearbyItems", "In api.loglocation failure callback");
+            }
+        });
+        return null;
+    }
 
-    //Nice to have:
-    //Sync up an offline copy of nearby items within a larger radius than normal.
-    //So, typically we are always-connected and we can see people nearby. However, we also want
-    //so that we can get a list of "Really Close to me" nearby, and cache a "Slightly Further away"
-    //list from me so we can still have relevant results if our connection blips off.
+    @Override
+    public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem) {
+        //return GetExtendedItem(nearbyitem.profile.getProfileid());
+
+        /* Build up a NearbyExtendedItem and return it */
+        final NearbyExtendedItem nearbyExtendedItem = new NearbyExtendedItem();
+        nearbyExtendedItem.profile = nearbyitem.profile;
+        nearbyExtendedItem.setJSONpoint(nearbyitem.getJSONpoint());
+
+        /* Get Average ratings */
+        /* My Profile Id, Person's Profile Id */
+        api.getAverageRatings(CredentialService.getInstance().getMyProfile().getProfileid()
+                , nearbyitem.profile.getProfileid()
+                , new Callback<List<AverageRating>>() {
+            @Override
+            public void success(List<AverageRating> averageRatings, Response response) {
+                nearbyExtendedItem.setAverageRatings(averageRatings);
+                //return nearbyExtendedItem;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                nearbyExtendedItem.setAverageRatings(new ArrayList<AverageRating>());
+
+            }
+        });
+
+
+        return nearbyExtendedItem;
+    }
+
+    @Override
+    public NearbyExtendedItem GetExtendedItem(long profileid) {
+
+        //Need to get a Profile
+        //Average Ratings /me/id
+        return null;
+    }
+
+
+
+    ////https://github.com/codepath/android_guides/wiki/Consuming-APIs-with-Retrofit
+    ////Write all the API consumption code here.
 
 
 }

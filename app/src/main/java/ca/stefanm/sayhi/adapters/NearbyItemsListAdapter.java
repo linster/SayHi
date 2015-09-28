@@ -1,24 +1,28 @@
 package ca.stefanm.sayhi.adapters;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.ns.developer.tagview.entity.Tag;
 import com.ns.developer.tagview.widget.TagCloudLinkView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import ca.stefanm.sayhi.R;
 import ca.stefanm.sayhi.model.NearbyItem;
-import ca.stefanm.sayhi.services.NearbyItemsService;
+import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
 
 /**
  * Created by stefan on 8/9/15.
@@ -52,39 +56,56 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         TextView friendlydistance = (TextView)convertView.findViewById(R.id.distancetextView);
         TagCloudLinkView talktopics = (TagCloudLinkView)convertView.findViewById(R.id.talkabout_taglist);
         ImageView userImage = (ImageView)convertView.findViewById(R.id.UserimageView);
-        ImageView mapImage  = (ImageView)convertView.findViewById(R.id.MapFragmentimageView);
+        ImageView mapImage = (ImageView)convertView.findViewById(R.id.MapFragmentImageView);
 
         //Now we need to populate the ListItemView
         nickname.setText(item.getNickname());
         //TODO: make this configurable based on global units settings.
-        friendlydistance.setText(item.getFriendlydistance(null));
+        friendlydistance.setText(item.getFriendlyDistance());
 
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView
+        //talktopics.removeAllViews();
+
+//        Integer size = talktopics.getTags().size();
+
+        talktopics.getTags().clear();
 
         int i = 1; //Used as ID for the tag thing.
-        for (String topic : item.getConversationtopics()){
+        for (String topic : item.getConversationTopics()){
             talktopics.add(new Tag(i, topic));
             i++;
         }
+        talktopics.drawTags();
 
-        //Check if our item has images set. If not, plug in some generic ones.
-        if (item.getUserPicture() == null){
-            Drawable img = getContext().getDrawable(R.drawable.ic_generic_person);
-            userImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to actually show a picture.
-            //userImage.setImageBitmap(nearbyItems.get(position).getUserPicture());
-        }
+        //Toast.makeText(getContext(), item.getUserImage(), Toast.LENGTH_LONG).show();
 
-        if (item.getMapFragment() == null) {
-            Drawable img = getContext().getDrawable(R.drawable.ic_generic_map);
-            mapImage.setImageDrawable(img);
-        } else {
-            //TODO: Update this to show the map picture.
-        }
+        Picasso.with(getContext()).load(item.getUserImage())
+                .placeholder(R.drawable.ic_generic_person)
+                .error(R.drawable.ic_generic_person)
+                .into(userImage);
+
+        Picasso.with(getContext()).load(item.getMapImage())
+                .placeholder(R.drawable.ic_generic_map)
+                .error(R.drawable.ic_generic_person)
+                .into(mapImage);
+
+
+
+
+
 
         return convertView;
 
     }
+
+    @Override
+    public void clear(){
+
+        nearbyItems.clear();
+        super.clear();
+    }
+
+
+
 }

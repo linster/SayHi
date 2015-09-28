@@ -1,17 +1,20 @@
 package ca.stefanm.sayhi.services;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
-import ca.stefanm.sayhi.model.NearbyExtendedItem.ConversationRating;
 import ca.stefanm.sayhi.model.NearbyItem;
 import ca.stefanm.sayhi.model.PhoneLocation;
+import ca.stefanm.sayhi.model.restpojo.LocationRequestBody;
+import ca.stefanm.sayhi.model.restpojo.Profile;
 
 
 /**
  * Created by stefan on 8/9/15.
  */
-public class MockNearbyItemsService implements NearbyItemsService {
+public class MockNearbyItemsService implements INearbyItemsService {
     //This class is a mock. We just use it to test whether the UI is working.
 
     private ArrayList<NearbyItem> nearbyItems;
@@ -19,24 +22,41 @@ public class MockNearbyItemsService implements NearbyItemsService {
     public MockNearbyItemsService() {
 
         nearbyItems = new ArrayList<NearbyItem>();
-        ArrayList<String> conversationtopics = new ArrayList<String>();
+        List<String> conversationtopics = new ArrayList<String>();
         conversationtopics.add("Computers");
         conversationtopics.add("Stuff");
         conversationtopics.add("Whatever");
 
+        //ArrayList<String>
+
 
 
         //Insert some dummy data
+        //profileid, bizcardid, chattiness, topics, nickname
+        nearbyItems.add(
+                new NearbyItem(new Profile(1, 1, 4, new ArrayList<String>(){{add("1"); add("2"); add("3");}} , "Boris", null))
+        );
 
-        nearbyItems.add(new NearbyItem(1, 1, "Boris", conversationtopics, 5, NearbyItem.Distanceunit.METERS, null, null ));
-        nearbyItems.add(new NearbyItem(2, 2, "Scott", conversationtopics, 6, NearbyItem.Distanceunit.METERS, null, null ));
-        nearbyItems.add(new NearbyItem(3, 3, "Sam", conversationtopics, 7, NearbyItem.Distanceunit.METERS, null, null ));
-        nearbyItems.add(new NearbyItem(4, 4, "Rocky", conversationtopics, 8, NearbyItem.Distanceunit.METERS, null, null ));
-        nearbyItems.add(new NearbyItem(5, 5, "Bullwinkle", conversationtopics, 3, NearbyItem.Distanceunit.METERS, null, null ));
+        nearbyItems.add(
+                new NearbyItem(new Profile(1, 1, 4, conversationtopics , "Scott", null))
+        );
+
+        nearbyItems.add(
+                new NearbyItem(new Profile(1, 1, 4, conversationtopics , "Sam", null))
+        );
+
+        nearbyItems.add(
+                new NearbyItem(new Profile(1, 1, 4, conversationtopics , "Rocky", null))
+        );
+        nearbyItems.add(
+                new NearbyItem(new Profile(1, 1, 4, conversationtopics , "Bullwinkle", null))
+        );
+
+
     }
 
     @Override
-    public ArrayList<NearbyItem> GetNearbyItems(PhoneLocation location) {
+    public ArrayList<NearbyItem> GetNearbyItems(LocationRequestBody location) {
         return this.nearbyItems;
     }
 
@@ -48,11 +68,16 @@ public class MockNearbyItemsService implements NearbyItemsService {
         conversationtopics.add("Stuff");
 
         //Create a dummy NearbyItem
-        NearbyExtendedItem nei = new NearbyExtendedItem(4, "Rocky", conversationtopics, 8, NearbyItem.Distanceunit.METERS, null, null );
-        NearbyExtendedItem.ConversationRating rating = new NearbyExtendedItem.ConversationRating("Vaclav's Pizza", 10, "Great talk");
-        nei.addNewRating(rating);
+        NearbyExtendedItem nei;
+        nei = new NearbyExtendedItem(new Profile(1, 1, 4, conversationtopics , "Bullwinkle", "https://lh6.googleusercontent.com/-H4mAAWPb2m4/AAAAAAAAAAI/AAAAAAAAHDg/0YHNim5UAoQ/photo.jpg?sz=128"), null);
+
 
         return nei;
 
+    }
+
+    @Override
+    public NearbyExtendedItem GetExtendedItem(long uuid) {
+        return GetExtendedItem(new NearbyExtendedItem());
     }
 }

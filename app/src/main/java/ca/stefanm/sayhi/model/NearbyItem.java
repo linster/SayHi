@@ -1,105 +1,154 @@
 package ca.stefanm.sayhi.model;
 
-import android.media.Image;
+        import android.content.res.Resources;
+        import android.os.Parcel;
+        import android.os.Parcelable;
+        import android.util.Log;
 
-import java.util.ArrayList;
+        import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by stefan on 8/8/15.
- */
-public class NearbyItem {
+        import java.io.Serializable;
+        import java.util.List;
+
+        import ca.stefanm.sayhi.R;
+        import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
+        import ca.stefanm.sayhi.model.restpojo.Profile;
+        import ca.stefanm.sayhi.services.MagicAPIKeys;
 
 
-    public NearbyItem(Integer userid, Integer sortQuotient, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        this.userid = userid;
-        this.sortQuotient = sortQuotient;
-        this.nickname = nickname;
-        this.conversationtopics = conversationtopics;
-        setDistance(distance, distanceunit);
-        this.distanceunit = distanceunit;
-        UserPicture = userPicture;
-        MapFragment = mapFragment;
+public class NearbyItem implements INearbyItem, Parcelable, Serializable {
+
+    //http://stackoverflow.com/questions/18548077/parcelable-protocol-requires-a-parcelable-creator-object-called-creator-i-do-ha
+    public static final String CREATOR = "stefan";
+    /* The Rest POJO that holds the goods */
+    public Profile profile;
+
+    public NearbyItem(Profile profile) {
+        this.profile = profile;
     }
 
-    public NearbyItem(Integer userid, String nickname, ArrayList<String> conversationtopics, float distance, Distanceunit distanceunit, Image userPicture, Image mapFragment) {
-        this.userid = userid;
-        this.nickname = nickname;
-        this.conversationtopics = conversationtopics;
-        setDistance(distance, distanceunit);
-        this.distanceunit = distanceunit;
-        UserPicture = userPicture;
-        MapFragment = mapFragment;
+    public NearbyItem() {
     }
 
-    Integer userid;
+    @Override
+    public long getItemId() {
+        return profile.getProfileid();
+    }
 
-    /**Used for sorting by magic. This is set on constructor. Server-side does the sorting & algorithm stuff */
-    Integer sortQuotient;
-
-    private String nickname;
-
-    private ArrayList<String> conversationtopics;
-
-    private float distance;
-
-    public enum Distanceunit {METERS, FEET, KILOMETERS, MILES};
-
-    private Distanceunit distanceunit;
-
-    private String friendlydistance;
-
-    Image UserPicture;
-    Image MapFragment;
-
-
+    @Override
     public String getNickname() {
-        return nickname;
+        return profile.getNickname();
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    @Override
+    public String getFriendlyDistance() {
+        return "1.0 mi";
     }
 
-    public ArrayList<String> getConversationtopics() {
-        return conversationtopics;
+    @Override
+    public List<String> getConversationTopics() {
+        return profile.getConversationTopics();
     }
 
-    public void setConversationtopics(ArrayList<String> conversationtopics) {
-        this.conversationtopics = conversationtopics;
+    @Override
+    public String getUserImage() {
+       return profile.getPictureurl();
+    }
+
+    enum MapSize {SMALL, LARGE};
+
+    @Override
+    public String getMapImage() {
+
+        String urlhead = "https://maps.googleapis.com/maps/api/staticmap?";
+
+        // Set up parameters after "?"
+        //https://developers.google.com/maps/documentation/static-maps/intro
+
+        if (this.JSONpoint == null || this.JSONpoint.equals("")){
+            return null;
+        }
+
+        String center = "center="+ getLocation().latitude + "," + getLocation().longitude;
+        String zoom = "zoom="+"14";
+
+        // Magic to get markers of the point onto the map
+        String marker = "markers=size:small%7Ccolor:black%7C" + getLocation().latitude + "," + getLocation().longitude;
+
+
+        String size = "size="+"64x64";
+        String apikey = "key="+ MagicAPIKeys.STATIC_MAPS_API_KEY;
+
+        String url = urlhead + center + "&" + zoom + "&" + size + "&"  + marker + "&" + apikey;
+        Log.d("MapImageURL", url);
+        return url;
+    }
+
+    private long AccuracyRadius;
+
+    public long getAccuracyRadius() {
+        return AccuracyRadius;
+    }
+
+    public void setAccuracyRadius(long accuracyRadius) {
+        AccuracyRadius = accuracyRadius;
     }
 
 
-    //Todo: Make Friendly distance unit-agnostic, and return nice things.
-    //Meanwhile, just use metric units.
 
-    public float getDistance() {
-        return distance;
+    public LatLng getLocation() {
+
+        //Parse the GeoJSON point and get the latlong
+        //Our input is this:
+        //"{\"type\":\"Point\",\"coordinates\":[-113.593883,53.522043]}"
+
+        String j = this.JSONpoint;
+
+
+        //HACK GROSS WTF
+        j = j.substring(j.indexOf("["),j.length()-2);
+
+        String lonstr = j.substring(1, j.indexOf(","));
+        String latstr = j.substring(j.indexOf(",")+1, j.length());
+
+        LatLng r = new LatLng(Double.valueOf(latstr), Double.valueOf(lonstr));
+
+        return r;
     }
 
-    public void setDistance(float distance, Distanceunit u) {
-        this.distance = distance;
-        //Todo: Fix units.
-        this.friendlydistance = Float.toString(distance) + "Mi";
+    //major feature envy.
+    protected String JSONpoint = new String(); //This is what comes back from NearbyResponse
+
+    public String getJSONpoint() {
+        return JSONpoint;
     }
 
-    public String getFriendlydistance(Distanceunit u) {
-        return friendlydistance;
+    public void setJSONpoint(String JSONpoint) {
+        this.JSONpoint = JSONpoint;
     }
 
+    public static NearbyItem buildNearbyItem(NearbyResponse nr) {
 
-    public Image getUserPicture() {
-        return UserPicture;
+        Profile p = new Profile();
+        p.setProfileid(nr.getProfileid());
+        p.setNickname(nr.getNickname());
+        p.setBusinessCardId(nr.getBusinessCardId());
+        p.setChattiness(nr.getChattiness());
+        p.setConversationTopics(nr.getConversationTopics());
+        p.setPictureurl(nr.getPictureurl());
+
+        NearbyItem r = new NearbyItem(p);
+        r.setJSONpoint(nr.getPoint());
+        return r;
     }
 
-    public void setUserPicture(Image userPicture) {
-        UserPicture = userPicture;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public Image getMapFragment() {
-        return MapFragment;
-    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-    public void setMapFragment(Image mapFragment) {
-        MapFragment = mapFragment;
     }
 }

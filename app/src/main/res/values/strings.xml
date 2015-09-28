@@ -21,4 +21,13 @@
     <string name="text_rating1">Attentiveness</string>
     <string name="text_rating2">Active Listening</string>
     <string name="text_rating3">On Topic</string>
+    <string name="title_activity_splash">Welcome</string>
+    <string name="login_button_text">Login with Google</string>
+    <string name="OK">OK</string>
+
+    <!-- API Keys -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="Cancel">Cancel</string>
+    <string name="action_logout">Logout</string>
 </resources>
