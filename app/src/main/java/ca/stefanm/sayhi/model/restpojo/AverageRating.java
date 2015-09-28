@@ -9,7 +9,7 @@ public class AverageRating {
     @Expose
     private String CategoryName;
     @Expose
-    private String AverageRating;
+    private double AverageRating;
 
     /**
      *
@@ -34,8 +34,12 @@ public class AverageRating {
      * @return
      * The AverageRating
      */
-    public String getAverageRating() {
+    public double getAverageRating() {
         return AverageRating;
+    }
+
+    public int getAverageRatingInt() {
+        return (int) Math.floor(AverageRating);
     }
 
     /**
@@ -43,7 +47,7 @@ public class AverageRating {
      * @param AverageRating
      * The AverageRating
      */
-    public void setAverageRating(String AverageRating) {
+    public void setAverageRating(double AverageRating) {
         this.AverageRating = AverageRating;
     }
 

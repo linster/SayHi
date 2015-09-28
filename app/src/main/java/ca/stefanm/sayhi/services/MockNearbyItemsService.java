@@ -27,12 +27,14 @@ public class MockNearbyItemsService implements INearbyItemsService {
         conversationtopics.add("Stuff");
         conversationtopics.add("Whatever");
 
+        //ArrayList<String>
+
 
 
         //Insert some dummy data
         //profileid, bizcardid, chattiness, topics, nickname
         nearbyItems.add(
-                new NearbyItem(new Profile(1, 1, 4, conversationtopics , "Boris", null))
+                new NearbyItem(new Profile(1, 1, 4, new ArrayList<String>(){{add("1"); add("2"); add("3");}} , "Boris", null))
         );
 
         nearbyItems.add(
@@ -75,7 +77,7 @@ public class MockNearbyItemsService implements INearbyItemsService {
     }
 
     @Override
-    public NearbyExtendedItem GetExtendedItem(UUID uuid) {
+    public NearbyExtendedItem GetExtendedItem(long uuid) {
         return GetExtendedItem(new NearbyExtendedItem());
     }
 }

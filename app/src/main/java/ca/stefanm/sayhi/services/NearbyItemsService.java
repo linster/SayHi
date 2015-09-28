@@ -18,6 +18,7 @@ import ca.stefanm.sayhi.model.ISayHi;
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
 import ca.stefanm.sayhi.model.NearbyItem;
 import ca.stefanm.sayhi.model.PhoneLocation;
+import ca.stefanm.sayhi.model.restpojo.AverageRating;
 import ca.stefanm.sayhi.model.restpojo.LocationRequestBody;
 import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
 import ca.stefanm.sayhi.services.Retrofit.ServiceGenerator;
@@ -105,11 +106,40 @@ public class NearbyItemsService extends IntentService implements INearbyItemsSer
 
     @Override
     public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem) {
-        return null;
+        //return GetExtendedItem(nearbyitem.profile.getProfileid());
+
+        /* Build up a NearbyExtendedItem and return it */
+        final NearbyExtendedItem nearbyExtendedItem = new NearbyExtendedItem();
+        nearbyExtendedItem.profile = nearbyitem.profile;
+        nearbyExtendedItem.setJSONpoint(nearbyitem.getJSONpoint());
+
+        /* Get Average ratings */
+        /* My Profile Id, Person's Profile Id */
+        api.getAverageRatings(CredentialService.getInstance().getMyProfile().getProfileid()
+                , nearbyitem.profile.getProfileid()
+                , new Callback<List<AverageRating>>() {
+            @Override
+            public void success(List<AverageRating> averageRatings, Response response) {
+                nearbyExtendedItem.setAverageRatings(averageRatings);
+                //return nearbyExtendedItem;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                nearbyExtendedItem.setAverageRatings(new ArrayList<AverageRating>());
+
+            }
+        });
+
+
+        return nearbyExtendedItem;
     }
 
     @Override
-    public NearbyExtendedItem GetExtendedItem(UUID uuid) {
+    public NearbyExtendedItem GetExtendedItem(long profileid) {
+
+        //Need to get a Profile
+        //Average Ratings /me/id
         return null;
     }
 

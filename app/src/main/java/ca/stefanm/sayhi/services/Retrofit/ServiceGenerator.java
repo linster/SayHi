@@ -4,7 +4,10 @@ import android.util.Base64;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.Map;
+
 import ca.stefanm.sayhi.model.ISayHi;
+import ca.stefanm.sayhi.services.CredentialService;
 import retrofit.RequestInterceptor;
 import retrofit.client.OkClient;
 import retrofit.RestAdapter;
@@ -13,10 +16,16 @@ import retrofit.RestAdapter;
  * Created by stefan on 9/10/15.
  */
 public class ServiceGenerator {
+
+    public static final String API_URL = "http://lagoon.stefanm.ca/";
     private static RestAdapter.Builder builder = new RestAdapter.Builder().setClient(new OkClient(new OkHttpClient()));
 
     // No need to instantiate this class.
     private ServiceGenerator() {
+    }
+
+    public static <S> S createService(Class<S> serviceClass, String baseUrl) {
+        return createService(serviceClass, baseUrl, null);
     }
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl, String username, String password) {
@@ -66,7 +75,12 @@ public class ServiceGenerator {
     private static ISayHi api = null;
     public static ISayHi getService(){
         if (api == null) {
-            api = createService(ISayHi.class, "http://lagoon.stefanm.ca/", "io", "bacon"); //Hardcoded user/pass. Change to use Auth Singleton.
+            if (CredentialService.getInstance().getAuthType() == CredentialService.AuthTypes.BASIC) {
+                Map<String, String> credentials = CredentialService.getInstance().getCredentials();
+                api = createService(ISayHi.class, API_URL, credentials.get("username"), credentials.get("password"));
+            } else {
+                api = createService(ISayHi.class, API_URL, CredentialService.getInstance().getAccessToken());
+            }
         }
         return api;
     }

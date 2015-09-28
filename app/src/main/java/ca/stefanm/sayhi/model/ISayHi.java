@@ -3,6 +3,7 @@ package ca.stefanm.sayhi.model;
 import java.util.List;
 
 import ca.stefanm.sayhi.model.restpojo.AverageRating;
+import ca.stefanm.sayhi.model.restpojo.BasicLogin;
 import ca.stefanm.sayhi.model.restpojo.Bizcard;
 import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
 import ca.stefanm.sayhi.model.restpojo.LocationRequestBody;
@@ -28,16 +29,21 @@ public interface ISayHi {
     //mmake a singleton to hold User data
     //write callbacks to store that data into singleton
 
-    @GET("/auth/me/User/")
+    @GET("/auth/me/user/")
     void getAuthUserRecord(Callback<User> cb);
 
     @GET("/auth/me/Profile")
     void getAuthProfileRecord(Callback<Profile> cb);
 
+    @POST("/auth/login")
+    void authBasicLogin(@Body BasicLogin bl, Callback<Profile> cb);
 
+    @GET("/api/profile/{profileid}")
+    void getProfile(@Path("profileid") long profileid, Callback<Profile> cb);
 
-    @GET("/api/AverageRatings/{userid}/{RatingWho}")
-    void getAverageRatings(@Path("userid") long userid, @Path("RatingWho") long RatingWho, Callback<List<AverageRating>> cb);
+    //Changed so both of these are profileids
+    @GET("/api/AverageRatings/{profileid}/{RatingWho}")
+    void getAverageRatings(@Path("profileid") long profileid, @Path("RatingWho") long RatingWho, Callback<List<AverageRating>> cb);
 
     @GET("/api/Bizcard/{profileid}")
     void getBizCard(@Path("profileid") long profileid, Callback<Bizcard> cb);

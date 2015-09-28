@@ -28,4 +28,7 @@ public class PhoneLocation implements Serializable{
         this.location = location;
     }
 
+    //fix this to have a lat, long easily make able plus factory methods if required.
+
+
 }

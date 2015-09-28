@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,13 @@ import ca.stefanm.sayhi.R;
 import ca.stefanm.sayhi.adapters.NearbyItemsListAdapter;
 import ca.stefanm.sayhi.model.NearbyExtendedItem;
 import ca.stefanm.sayhi.model.NearbyItem;
+import ca.stefanm.sayhi.services.EventBusEvents.ChildReadyEvent;
+import ca.stefanm.sayhi.services.EventBusEvents.GetExtendedNearbyItemEvent;
 import ca.stefanm.sayhi.services.MockNearbyItemsService;
 import ca.stefanm.sayhi.services.INearbyItemsService;
 import ca.stefanm.sayhi.services.NearbyItemsService;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.EventBusException;
 
 /**
  * Created by stefan on 8/8/15.
@@ -48,17 +53,27 @@ public class NearbyListFragment extends Fragment {
 
         //Set up the List Adapter for the ListView on this activity.
         //As a test, use only the MockNearbyItemsService.
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
 
         View fragmentView = inflater.inflate(R.layout.fragment_nearbyitemslist, container, false);
 
 
 
 
-        final INearbyItemsService nearbyItemsService = new MockNearbyItemsService();
+        final INearbyItemsService nearbyItemsService = new NearbyItemsService();
 
         final NearbyItemsListAdapter nila = new NearbyItemsListAdapter(getActivity(),
                 R.layout.nearbyitem_listitem,
-                nearbyItemsService.GetNearbyItems(null)); //Null Phone location to start with.
+                new ArrayList<NearbyItem>()); //Null Phone location to start with.
+        //Load list
+        Intent i = new Intent(getActivity(), NearbyItemsService.class);
+        ResultReceiver rr = new NearbyListResultReceiver(new Handler());
+        i.putExtra("NearbyListResultReceiver", rr);
+        getActivity().startService(i);
+
+        Toast.makeText(getActivity(), "Loaded!", Toast.LENGTH_SHORT).show();
 
         this.nearbyItemsListAdapter = nila; //Get the pointer out to the class.
 
@@ -69,13 +84,13 @@ public class NearbyListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final NearbyItem nearbyItem = nila.getItem(position);
-                final NearbyExtendedItem nei = nearbyItemsService.GetExtendedItem(nearbyItem);
-                long neiid = nei.getItemId();
+
+
 
                 Intent intent = new Intent(getActivity(), ExtendedViewActivity.class);
-                intent.putExtra("EXTENDED_VIEW_ID", neiid);
-
                 startActivity(intent);
+                EventBus.getDefault().postSticky(new GetExtendedNearbyItemEvent(nearbyItem));
+
             }
         });
 
@@ -98,6 +113,16 @@ public class NearbyListFragment extends Fragment {
 
 
         return fragmentView;
+    }
+
+    //100% WTF. Don't ever do this again.
+    //Had to do this because the OnCreate wasn't firing in time to post events.
+    public boolean IsExtendedViewActivityReady = false;
+
+    public void onEvent(ChildReadyEvent cre){
+        if (cre.getChildIdentifer().equals("ExtendedViewActivity")){
+            this.IsExtendedViewActivityReady = true;
+        }
     }
 
 

@@ -17,4 +17,66 @@
         android:maxLines="12"
         android:scrollIndicators="right"
         android:textIsSelectable="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logged in?"
+        android:id="@+id/ddlog_authstatus_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logged in?_text"
+        android:id="@+id/ddlog_authstatus" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AuthType"
+        android:id="@+id/ddlog_authtype_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AuthType_text"
+        android:id="@+id/ddlog_authtype" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:id="@+id/ddlog_username_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username_text"
+        android:id="@+id/ddlog_username" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:id="@+id/ddlog_password_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password_text"
+        android:id="@+id/ddlog_password" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AccessToken"
+        android:id="@+id/ddlog_accesstoken_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AccessToken_text"
+        android:id="@+id/ddlog_accesstoken" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RefreshToken"
+        android:id="@+id/ddlog_refreshtoken_lbl" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RefreshToken_text"
+        android:id="@+id/ddlog_refreshtoken" />
+
+
 </LinearLayout>

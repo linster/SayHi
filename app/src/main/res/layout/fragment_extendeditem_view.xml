@@ -77,12 +77,16 @@
                 android:background="#ffd442"
                 android:id="@+id/eifrUserImageView"
                 android:layout_margin="5dp" />
-            <ImageView
+            <com.google.android.gms.maps.MapView
+                xmlns:map="http://schemas.android.com/apk/res-auto"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:background="#8cf4ff"
                 android:id="@+id/eifrMapFragmentImageView"
-                android:layout_margin="5dp" />
+                android:layout_margin="5dp"
+                map:cameraZoom="13"
+                map:mapType="normal"
+                map:liteMode="true"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 package ca.stefanm.sayhi.model.restpojo;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -130,5 +131,11 @@ public class Profile {
 
     public void setPictureurl(String pictureurl){
         Pictureurl = pictureurl;
+    }
+
+    @Override
+    public String toString(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

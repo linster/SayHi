@@ -60,7 +60,7 @@ public class ExtendedNearbyItemViewFragment extends Fragment {
 
         //TODO: Actually Make this work.
         MockNearbyItemsService mockNearbyItemsService = new MockNearbyItemsService();
-        setNearbyExtendedItem(mockNearbyItemsService.GetExtendedItem(UUID.randomUUID()));
+        setNearbyExtendedItem(mockNearbyItemsService.GetExtendedItem(12));
     }
 
     @Override
@@ -108,6 +108,10 @@ public class ExtendedNearbyItemViewFragment extends Fragment {
                 .placeholder(R.drawable.ic_generic_map)
                 .error(R.drawable.ic_generic_map)
                 .into(mapImage);
+
+        //Now to change this to a MapView.
+        
+
 
 
     }

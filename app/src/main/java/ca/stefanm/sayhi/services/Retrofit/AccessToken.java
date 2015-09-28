@@ -21,4 +21,9 @@ public class AccessToken {
 
         return tokenType;
     }
+
+    public AccessToken(String accessToken, String tokenType) {
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+    }
 }

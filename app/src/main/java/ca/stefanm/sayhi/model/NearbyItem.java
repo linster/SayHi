@@ -1,27 +1,24 @@
 package ca.stefanm.sayhi.model;
 
-        import android.content.Context;
-        import android.graphics.drawable.Drawable;
+        import android.content.res.Resources;
         import android.os.Parcel;
         import android.os.Parcelable;
-        import android.widget.ImageView;
-        import android.widget.Toast;
+        import android.util.Log;
 
-        import com.squareup.picasso.Picasso;
+        import com.google.android.gms.maps.model.LatLng;
 
         import java.io.Serializable;
-        import java.util.ArrayList;
         import java.util.List;
 
         import ca.stefanm.sayhi.R;
         import ca.stefanm.sayhi.model.restpojo.NearbyResponse;
         import ca.stefanm.sayhi.model.restpojo.Profile;
-        import ca.stefanm.sayhi.services.Retrofit.ServiceGenerator;
-        import retrofit.Callback;
-        import retrofit.RetrofitError;
-        import retrofit.client.Response;
+        import ca.stefanm.sayhi.services.MagicAPIKeys;
 
-public class NearbyItem implements INearbyItem, Parcelable {
+
+public class NearbyItem implements INearbyItem, Parcelable, Serializable {
+
+    //http://stackoverflow.com/questions/18548077/parcelable-protocol-requires-a-parcelable-creator-object-called-creator-i-do-ha
     public static final String CREATOR = "stefan";
     /* The Rest POJO that holds the goods */
     public Profile profile;
@@ -58,9 +55,76 @@ public class NearbyItem implements INearbyItem, Parcelable {
        return profile.getPictureurl();
     }
 
+    enum MapSize {SMALL, LARGE};
+
     @Override
     public String getMapImage() {
-        return null;
+
+        String urlhead = "https://maps.googleapis.com/maps/api/staticmap?";
+
+        // Set up parameters after "?"
+        //https://developers.google.com/maps/documentation/static-maps/intro
+
+        if (this.JSONpoint == null || this.JSONpoint.equals("")){
+            return null;
+        }
+
+        String center = "center="+ getLocation().latitude + "," + getLocation().longitude;
+        String zoom = "zoom="+"14";
+
+        // Magic to get markers of the point onto the map
+        String marker = "markers=size:small%7Ccolor:black%7C" + getLocation().latitude + "," + getLocation().longitude;
+
+
+        String size = "size="+"64x64";
+        String apikey = "key="+ MagicAPIKeys.STATIC_MAPS_API_KEY;
+
+        String url = urlhead + center + "&" + zoom + "&" + size + "&"  + marker + "&" + apikey;
+        Log.d("MapImageURL", url);
+        return url;
+    }
+
+    private long AccuracyRadius;
+
+    public long getAccuracyRadius() {
+        return AccuracyRadius;
+    }
+
+    public void setAccuracyRadius(long accuracyRadius) {
+        AccuracyRadius = accuracyRadius;
+    }
+
+
+
+    public LatLng getLocation() {
+
+        //Parse the GeoJSON point and get the latlong
+        //Our input is this:
+        //"{\"type\":\"Point\",\"coordinates\":[-113.593883,53.522043]}"
+
+        String j = this.JSONpoint;
+
+
+        //HACK GROSS WTF
+        j = j.substring(j.indexOf("["),j.length()-2);
+
+        String lonstr = j.substring(1, j.indexOf(","));
+        String latstr = j.substring(j.indexOf(",")+1, j.length());
+
+        LatLng r = new LatLng(Double.valueOf(latstr), Double.valueOf(lonstr));
+
+        return r;
+    }
+
+    //major feature envy.
+    protected String JSONpoint = new String(); //This is what comes back from NearbyResponse
+
+    public String getJSONpoint() {
+        return JSONpoint;
+    }
+
+    public void setJSONpoint(String JSONpoint) {
+        this.JSONpoint = JSONpoint;
     }
 
     public static NearbyItem buildNearbyItem(NearbyResponse nr) {
@@ -72,7 +136,9 @@ public class NearbyItem implements INearbyItem, Parcelable {
         p.setChattiness(nr.getChattiness());
         p.setConversationTopics(nr.getConversationTopics());
         p.setPictureurl(nr.getPictureurl());
+
         NearbyItem r = new NearbyItem(p);
+        r.setJSONpoint(nr.getPoint());
         return r;
     }
 

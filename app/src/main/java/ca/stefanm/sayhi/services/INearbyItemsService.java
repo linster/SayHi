@@ -23,7 +23,7 @@ public interface INearbyItemsService {
 
     //Given a NearbyItem, get back a NearbyExtendedItem from the server.
     public NearbyExtendedItem GetExtendedItem(NearbyItem nearbyitem);
-    public NearbyExtendedItem GetExtendedItem(UUID uuid);
+    public NearbyExtendedItem GetExtendedItem(long uuid);
 
     //Add GetRating AttributeList... returns a list of things that you can rate by on
     //the extended item view.

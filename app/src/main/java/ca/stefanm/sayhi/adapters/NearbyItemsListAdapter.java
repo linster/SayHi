@@ -9,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.ns.developer.tagview.entity.Tag;
 import com.ns.developer.tagview.widget.TagCloudLinkView;
 import com.squareup.picasso.Picasso;
@@ -51,7 +56,7 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         TextView friendlydistance = (TextView)convertView.findViewById(R.id.distancetextView);
         TagCloudLinkView talktopics = (TagCloudLinkView)convertView.findViewById(R.id.talkabout_taglist);
         ImageView userImage = (ImageView)convertView.findViewById(R.id.UserimageView);
-        ImageView mapImage  = (ImageView)convertView.findViewById(R.id.MapFragmentimageView);
+        ImageView mapImage = (ImageView)convertView.findViewById(R.id.MapFragmentImageView);
 
         //Now we need to populate the ListItemView
         nickname.setText(item.getNickname());
@@ -61,11 +66,17 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
         //Talk topics. Need to loop over the list of strings and then follow this:
         //https://github.com/namito/TagCloudLinkView
         //talktopics.removeAllViews();
+
+//        Integer size = talktopics.getTags().size();
+
+        talktopics.getTags().clear();
+
         int i = 1; //Used as ID for the tag thing.
         for (String topic : item.getConversationTopics()){
             talktopics.add(new Tag(i, topic));
             i++;
         }
+        talktopics.drawTags();
 
         //Toast.makeText(getContext(), item.getUserImage(), Toast.LENGTH_LONG).show();
 
@@ -76,13 +87,23 @@ public class NearbyItemsListAdapter extends ArrayAdapter<NearbyItem> {
 
         Picasso.with(getContext()).load(item.getMapImage())
                 .placeholder(R.drawable.ic_generic_map)
-                .error(R.drawable.ic_generic_map)
+                .error(R.drawable.ic_generic_person)
                 .into(mapImage);
+
+
+
 
 
 
         return convertView;
 
+    }
+
+    @Override
+    public void clear(){
+
+        nearbyItems.clear();
+        super.clear();
     }
 
 
