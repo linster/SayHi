@@ -1,12 +1,10 @@
 package ca.stefanm.sayhi;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +17,7 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import ca.stefanm.sayhi.model.ISayHi;
-import ca.stefanm.sayhi.model.restpojo.BasicLogin;
 import ca.stefanm.sayhi.model.restpojo.Profile;
-import ca.stefanm.sayhi.model.restpojo.User;
 import ca.stefanm.sayhi.services.CredentialService;
 import ca.stefanm.sayhi.services.Retrofit.ServiceGenerator;
 import ca.stefanm.sayhi.ui.BasicAuthLoginDialog;
@@ -35,6 +31,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
+        // Hide action bar
+        getSupportActionBar().hide();
+
 
         /* Setup pacifico font on splash activity */
         TextView tvSayHiLogo = (TextView)findViewById(R.id.SayHiLogo);
@@ -59,6 +60,9 @@ public class SplashActivity extends AppCompatActivity {
         CredentialService cs = CredentialService.getInstance();
 
         cs.initializeFromSharedPreferences(getSharedPreferences(CredentialService.CRED_FILE, 0));
+
+
+
 
 
 

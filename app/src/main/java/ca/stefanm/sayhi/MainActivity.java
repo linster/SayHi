@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseObject;
+
 import ca.stefanm.sayhi.adapters.NearbyItemsListAdapter;
 import ca.stefanm.sayhi.services.CredentialService;
 import ca.stefanm.sayhi.ui.LocationDebugDialog;
@@ -42,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         CredentialService cs = CredentialService.getInstance();
 
         cs.initializeFromSharedPreferences(getSharedPreferences(CredentialService.CRED_FILE, 0));
+
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+
 
         if (cs.getAuthenticated() == false){
             Intent i = new Intent(this, SplashActivity.class);
