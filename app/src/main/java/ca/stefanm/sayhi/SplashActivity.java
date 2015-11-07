@@ -1,8 +1,10 @@
 package ca.stefanm.sayhi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,6 +38,11 @@ public class SplashActivity extends AppCompatActivity {
         // Hide action bar
         getSupportActionBar().hide();
 
+        Button login = (Button)findViewById(R.id.splash_login);
+        createGhostButton(login);
+        Button signUp= (Button)findViewById(R.id.splash_signup);
+        createGhostButton(signUp);
+
 
         /* Setup pacifico font on splash activity */
         TextView tvSayHiLogo = (TextView)findViewById(R.id.SayHiLogo);
@@ -67,8 +74,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         /* Set up onClickListeners for the login buttons */
-        Button basicLogin = (Button)findViewById(R.id.splash_login_basic);
-        basicLogin.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Show the basic auth window.
@@ -77,8 +83,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        Button googleLogin = (Button)findViewById(R.id.splash_login_google);
-        googleLogin.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Do nothing so far.
@@ -168,5 +173,15 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    // Modified version from a basic class by mbonnin on stackoverflow
+    public static void createGhostButton(Button b){
+        GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setStroke(2, Color.WHITE);
+        background.setCornerRadius(50);
+        b.setBackground(background);
     }
 }

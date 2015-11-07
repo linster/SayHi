@@ -38,17 +38,22 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_button_text"
-        android:id="@+id/splash_login_google"
+        android:text="@string/signup_button_text"
+        android:textSize="25sp"
+        android:textColor="#ffffff"
+        android:id="@+id/splash_signup"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="54dp" />
+        android:layout_marginBottom="210dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login with User/Pass"
-        android:id="@+id/splash_login_basic"
+        android:textSize="25sp"
+        android:text="Login"
+        android:textColor="#ffffff"
+        android:id="@+id/splash_login"
+        android:layout_marginBottom="125dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
